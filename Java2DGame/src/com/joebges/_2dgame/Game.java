@@ -27,29 +27,22 @@ public class Game extends Canvas implements Runnable {
 	private JFrame frame; // Container
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT,
 			BufferedImage.TYPE_INT_RGB);
-	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer())
-			.getData(); // How many pixels inside the image
-	private int[] colours = new int[6 * 6 * 6]; // 6 shades for 3 colours (RGB)
+	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData(); // How many pixels inside the image
+	private int[] colours = new int[6 * 6 * 6]; 								// 6 shades for 3 colours (RGB)
 
 	private Screen screen;
 	public InputHandler input;
 
 	public Game() {
-		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE)); // Größe
-																		// für
-																		// das
-																		// frame/canvas
+		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE)); 		// Größe für das frame/canvas
 		setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 
 		frame = new JFrame(NAME);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Bei schließen =
-																// exit
-																// ausführen
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Bei schließen = exit ausführen
 		frame.setLayout(new BorderLayout());
 
-		frame.add(this, BorderLayout.CENTER); // Canvas in der Mitte des Layouts
-												// anzeigen
+		frame.add(this, BorderLayout.CENTER); // Canvas in der Mitte des Layouts anzeigen
 		frame.pack();
 
 		frame.setResizable(false);
@@ -73,7 +66,7 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		
-		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet_original.png"));
 		input = new InputHandler(this);
 	}
 
@@ -152,11 +145,13 @@ public class Game extends Canvas implements Runnable {
 			createBufferStrategy(3); // triple buffering, higher numbers =
 										// better image quality
 			return;
-		} // reduce tearing
+		}
 
 		for(int y = 0; y < 32; y++){			//32 tiles
 			for(int x = 0; x < 32; x++){
-				screen.render(x<<3, y<<3, 0, Colours.get(555, 500, 050, 005));			//shift by 8 for 8 pixels
+				boolean flipX = x%2 == 1;
+				boolean flipY = y%2 == 1;
+				screen.render(x<<3, y<<3, 0, Colours.get(555, 505, 055, 550), flipX, flipY);			//shift by 8 for 8 pixels, mirroring
 			}
 		}
 		
@@ -171,8 +166,8 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		g.dispose(); // Free up memory&resources that image is using
-		bs.show(); // show & display content of buffer
+		g.dispose(); 				// Free up memory&resources that image is using
+		bs.show(); 					// show & display content of buffer
 	}
 
 	public static void main(String[] args) {
