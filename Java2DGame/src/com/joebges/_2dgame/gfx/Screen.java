@@ -48,5 +48,9 @@ public class Screen {
 			}
 		}
 	}
+	public void render(int xPos, int yPos, int tile, int colour){
+		render(xPos, yPos, tile, colour, false, false);
+	}
+	
 	
 }

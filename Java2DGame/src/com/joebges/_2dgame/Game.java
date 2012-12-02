@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import com.joebges._2dgame.gfx.Colours;
+import com.joebges._2dgame.gfx.Font;
 import com.joebges._2dgame.gfx.Screen;
 import com.joebges._2dgame.gfx.SpriteSheet;
 
@@ -66,7 +67,7 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		
-		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet_original.png"));
+		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
 		input = new InputHandler(this);
 	}
 
@@ -154,6 +155,8 @@ public class Game extends Canvas implements Runnable {
 				screen.render(x<<3, y<<3, 0, Colours.get(555, 505, 055, 550), flipX, flipY);			//shift by 8 for 8 pixels, mirroring
 			}
 		}
+		String msg = "This is our game!";
+		Font.render(msg, screen, screen.xOffset + screen.width/2 - ((msg.length()*8)/2),screen.yOffset + screen.height/2,Colours.get(-1,-1,-1,000));	//centering the message on the screen
 		
 		for(int y = 0; y < screen.height; y++){			//32 tiles
 			for(int x = 0; x < screen.width; x++){
